@@ -1,0 +1,6 @@
+# rawdata/train.json
+
+bert-baseline/saved/*
+rnn-baseline/saved/*
+tfidf-baseline/saved/*
+EDA/output/*
