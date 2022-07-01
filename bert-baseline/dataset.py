@@ -5,8 +5,9 @@ from utils import get_fact, label2idx
 
 
 class CaseData(Dataset):
-    def __init__(self, file_name, class_num):
+    def __init__(self, file_name, class_num,is_debug):
         self.data = json.load(open(file_name, encoding='utf-8'))
+        if is_debug: self.data = self.data[0:200]
         self.class_num = class_num
 
     def __getitem__(self, idx):

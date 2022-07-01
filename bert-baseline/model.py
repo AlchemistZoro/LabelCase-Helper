@@ -3,9 +3,9 @@ from transformers import BertModel
 
 
 class CaseClassification(nn.Module):
-    def __init__(self, class_num):
+    def __init__(self, class_num,model_path):
         super(CaseClassification, self).__init__()
-        self.bert = BertModel.from_pretrained('bert-base-chinese')
+        self.bert = BertModel.from_pretrained(model_path)
         self.linear = nn.Linear(in_features=768, out_features=class_num)
 
     def forward(self, input_ids=None, attention_mask=None, token_type_ids=None, label=None):

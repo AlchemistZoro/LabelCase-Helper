@@ -11,6 +11,7 @@ def get_fact(content):
     fact_starts = []
 
     for i, c in enumerate(content):
+        if not c : continue
         if c[0] == '【' and c[-1] == '】':
             breakers.append(i)
             if '查明' in c:
