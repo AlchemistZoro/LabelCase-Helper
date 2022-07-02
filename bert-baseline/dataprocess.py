@@ -104,5 +104,5 @@ if __name__ == "__main__":
     
     textual_frame,code_frame,text_code_frame=labeltree_dataset(textual_tree,code_tree,process_data_path)
 
-    # create_train_dataset(textual_frame,code_frame)
+    create_train_dataset(textual_frame,code_frame,data,process_data_path)
     create_vectorlabel_dataset(data,process_data_path)
