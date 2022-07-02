@@ -38,11 +38,10 @@ model_root_path = 'E:/pre-train-model' # model root path on windows
 model_list = [
     'bert-base-chinese',
     'chinese-bert-wwm',
-    
 ]
 model_idx =0
 model_path = model_root_path + '/'+model_list[model_idx]+'/'
-
+model_path = 'bert-base-chinese'
 epochs = 10
 learning_rate = 1e-5
 
@@ -78,8 +77,8 @@ train_dataset,valid_dataset = random_split(dataset=full_data,lengths=[train_size
 
 
 # print(len(full_data))
-train_dataloader = DataLoader(train_dataset, batch_size=4, shuffle=True)
-valid_dataloader = DataLoader(valid_dataset,batch_size=4,shuffle=True)
+train_dataloader = DataLoader(train_dataset, batch_size=8, shuffle=True)
+valid_dataloader = DataLoader(valid_dataset,batch_size=16,shuffle=True)
 
 # load the model and tokenizer
 model = CaseClassification(class_num=252,model_path=model_path).to(device)
@@ -125,7 +124,7 @@ best_micro_F1 = 0
 # start training process
 def train_fn(train_dataloader,model,optimizer,epoch):
 
-    print_diff = 20
+    print_diff = 50
     model.train()
     running_loss = 0.0
     total_precision = 0
@@ -133,7 +132,7 @@ def train_fn(train_dataloader,model,optimizer,epoch):
     total_f1 = 0
     total_acc = 0  
 
-    for i, data in enumerate(train_dataloader):
+    for i, data in tqdm(enumerate(train_dataloader)):
         fact, label = data
 
         # tokenize the data text
@@ -160,16 +159,16 @@ def train_fn(train_dataloader,model,optimizer,epoch):
             # wandb.log({'train_loss': running_loss / 50})
             running_loss = 0.0
             
-    #     logits=get_predict_label(logits,0)
-    #     for i in range(len(logits)):
-    #         acc,p,r,F1 = cal_metrics(logits[i],label[i])        
-    #         # print(logits[0],label[1])       
-    #         total_precision+= p
-    #         total_recall+= r
-    #         total_f1+= F1
-    #         total_acc+= acc
+        logits=get_predict_label(logits,0.5)
+        for i in range(len(logits)):
+            acc,p,r,F1 = cal_metrics(logits[i],label[i])        
+            # print(logits[0],label[1])       
+            total_precision+= p
+            total_recall+= r
+            total_f1+= F1
+            total_acc+= acc
 
-    # return total_acc/train_size,total_precision/train_size,total_recall/train_size,total_f1/train_size
+    return total_acc/train_size,total_precision/train_size,total_recall/train_size,total_f1/train_size
 
 # class MetricMonitor():
 #     def __init__(self,data_size):
@@ -221,20 +220,14 @@ def valid_fn(valid_dataloader,model):
             total_recall+= r
             total_f1+= F1
             total_acc+= acc
-        running_loss += loss.item()
-        print_diff = 50
-        if i % print_diff == print_diff -1 :
-            print('Epoch %d Valid, step: %2d, valid_loss: %.3f' % (epoch + 1, i + 1, running_loss / print_diff))
-            # wandb.log({'train_loss': running_loss / 50})
-            running_loss = 0.0
     
     return total_acc/valid_size,total_precision/valid_size,total_recall/valid_size,total_f1/valid_size
 
         
 
 for epoch in range(epochs):
-    train_fn(train_dataloader,model,optimizer,epoch)
-    # print('Epoch %d Train   acc: %.4f, pre: %.4f, rec: %.4f, f1: %.4f' % (epoch,acc,precision,recall,f1))
+    acc,precision,recall,f1=train_fn(train_dataloader,model,optimizer,epoch)
+    print('Epoch %d Train   acc: %.4f, pre: %.4f, rec: %.4f, f1: %.4f' % (epoch,acc,precision,recall,f1))
     acc,precision,recall,f1=valid_fn(valid_dataloader,model)
     
     print('Epoch %d Valid   acc: %.4f, pre: %.4f, rec: %.4f, f1: %.4f' % (epoch,acc,precision,recall,f1))
