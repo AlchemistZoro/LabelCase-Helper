@@ -7,3 +7,4 @@ rnn-baseline/saved/*
 tfidf-baseline/saved/*
 EDA/output/*
 report&question
+preprocessdata
