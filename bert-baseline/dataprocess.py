@@ -101,8 +101,18 @@ if __name__ == "__main__":
     textual_tree = json.load(open('../rawdata/textual_tree.json', encoding='utf-8'))
     data=json.load(open('../rawdata/train.json', encoding='utf-8'))
 
-    
+    '''
+    textual_frame: [A,B,C] 三级标签-中文
+    code_frame: [A,B,C] 三级标签-代码
+    text_code_frame: [C1,C2] 三级标签映射
+    共234条三级标签，加上负样本为235个标签
+    '''
     textual_frame,code_frame,text_code_frame=labeltree_dataset(textual_tree,code_tree,process_data_path)
-
-    # create_train_dataset(textual_frame,code_frame)
+    '''
+    train_frame:[id,label,text]
+    '''
+    create_train_dataset(textual_frame,code_frame,data,process_data_path)
+    '''
+    vec_frame:[id,[label_vec]]
+    '''
     create_vectorlabel_dataset(data,process_data_path)
