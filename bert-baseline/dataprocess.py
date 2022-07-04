@@ -17,7 +17,18 @@ def tree_to_table(tree):
                 table.append([a,b,c])
     return table
 
-
+def get_level3labels(tree):
+    level3labels = []
+    for t in tree:
+        level1 = t['value']
+        children1 = t['children']
+        for child1 in children1:
+            level2 = child1['value']
+            children2 = child1['children']
+            for child2 in children2:
+                level3 = child2['value']
+                level3labels.append('/'.join([level1, level2, level3]))
+    return level3labels
 
 def labeltree_dataset(textual_tree,code_tree,process_data_path):
     textual_table = []
@@ -53,6 +64,8 @@ def create_train_dataset(textual_frame,code_frame,data,process_data_path):
     label_size=textual_frame.shape[0]
     process_data = []
     y=0
+    label_set = set()
+    label_c_set = set()
     for i in tqdm(data):
         content_list = []
         for j in i["content"]:
@@ -61,9 +74,12 @@ def create_train_dataset(textual_frame,code_frame,data,process_data_path):
         for j in i["evidence"]:
             idx = j["index"]
             value_list = j["value"]
+            
             pro_value_list = []
             for z in value_list:
+                label_set.add(z)
                 code_label = z.split('/')[-1]
+                label_c_set.add(code_label)
                 num_label = code_frame[code_frame["C"]==code_label].index.values[0]
                 pro_value_list.append(str(num_label))
                 
@@ -74,7 +90,9 @@ def create_train_dataset(textual_frame,code_frame,data,process_data_path):
             process_data = content_list
         else:
             process_data=process_data+content_list
-        
+    # 234
+    # print(len(label_set))
+    # print(len(label_c_set))
     dataset = pd.DataFrame(process_data,columns=columns)
     dataset.to_csv(process_data_path+'train.csv',index = False)
 
@@ -99,6 +117,12 @@ if __name__ == "__main__":
 
     code_tree=json.load(open('../rawdata/code_tree.json', encoding='utf-8'))
     textual_tree = json.load(open('../rawdata/textual_tree.json', encoding='utf-8'))
+
+    code_list = get_level3labels(code_tree)
+    textual_list = get_level3labels(textual_tree)
+    # 216
+    # print(len(code_list))
+    # print(len(textual_list))
     data=json.load(open('../rawdata/train.json', encoding='utf-8'))
 
     '''

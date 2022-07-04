@@ -3,6 +3,7 @@
 bert-baseline/saved/*
 bert-baseline/__pycache__/
 bert-baseline/wandb/
+bert-baseline/model_name.pth
 rnn-baseline/saved/*
 tfidf-baseline/saved/*
 EDA/output/*

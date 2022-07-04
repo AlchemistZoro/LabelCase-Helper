@@ -4,11 +4,19 @@ from tqdm import tqdm
 from transformers import BertTokenizer
 from model import CaseClassification
 from utils import get_fact, get_level3labels
+import argparse
 
-input_path = "./input/test.json"
-output_path = "./output/result.txt"
+
+parser = argparse.ArgumentParser(description='Evaluate for aqbq.')
+parser.add_argument('--input_dir', default='./input/test.json')
+parser.add_argument('--output_dir', default='./output/answer.json')
+args = parser.parse_args()
+
 
 if __name__ == "__main__":
+    input_path = args.input_dir
+    output_path = args.output_dir
+
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     model = CaseClassification(class_num=252).to(device)
     model.load_state_dict(torch.load('./saved/model10.pth', map_location=device))
