@@ -9,3 +9,5 @@ tfidf-baseline/saved/*
 EDA/output/*
 report&question
 preprocessdata
+
+website_refer/model/model_name.pth
