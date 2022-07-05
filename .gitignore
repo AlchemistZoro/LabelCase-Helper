@@ -1,13 +1,11 @@
 # rawdata/train.json
-
-bert-baseline/saved/*
-bert-baseline/__pycache__/
-bert-baseline/wandb/
+pretrain-baseline/saved/*
+pretrain-baseline/__pycache__/
+pretrain-baseline/wandb/
 
 rnn-baseline/saved/*
 tfidf-baseline/saved/*
 EDA/output/*
-report&question
 preprocessdata
-
+processeddata
 *.pth
