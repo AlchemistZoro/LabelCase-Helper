@@ -217,7 +217,7 @@ for i,group in tqdm(data_onehot.groupby('id')):
         content_windows+=group.iloc[end_index]['content']
         end_index+=1
     # for idx,row in group.iterrows():
-    current_label = content_label
+    current_label = content_label.copy()
     current_label[current_label>1] =1
     current_label = list(current_label)
     current_label.append(id)
@@ -233,7 +233,7 @@ for i,group in tqdm(data_onehot.groupby('id')):
             start_size = len(group.iloc[start_index]['content'])
             content_windows= content_windows[start_size:]
             start_index+=1
-        current_label = content_label
+        current_label = content_label.copy()
         current_label[current_label>1] =1
         current_label = list(current_label)
         current_label.append(id)
@@ -250,7 +250,7 @@ data_dw_frame=pd.DataFrame( data_windows,columns=columns_dw)
 '''
 r=[0.8,0.9,1]，r=1：全量训练模型 
 '''
-train_rate=0.8
+train_rate=0.9
 
 train_data_path = process_data_path+"tr-"+str(train_rate)+'/'
 if not os.path.exists(train_data_path):
