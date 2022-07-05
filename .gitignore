@@ -1,7 +1,7 @@
 # rawdata/train.json
 pretrain-baseline/saved/*
 pretrain-baseline/__pycache__/
-pretrain-baseline/wandb/
+*/wandb/*
 
 rnn-baseline/saved/*
 tfidf-baseline/saved/*
