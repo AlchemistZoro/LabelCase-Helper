@@ -1,0 +1,50 @@
+.bloom-enter-active {
+    transition: all 1s;
+
+}
+
+.bloom-leave-active {
+    transition: all 1s;
+}
+
+.bloom-enter-from {
+    opacity: 0;
+}
+
+.bloom-leave-to {
+    opacity: 0;
+}
+
+.slide-enter-active {
+    transition: all .5s;
+
+}
+
+.slide-leave-active {
+    transition: all .5s;
+}
+
+.slide-enter-from {
+    opacity: 0;
+    transform: translateX(400px);
+}
+
+
+.show-enter-active {
+    transition: all 0.2s;
+
+}
+
+.new {
+    animation: bg-color 2s;
+    animation-iteration-count: 1
+}
+
+@keyframes bg-color {
+    0% {
+        background-color: #f5f5dc;
+    }
+    100% {
+        background-color: transparent;
+    }
+}
