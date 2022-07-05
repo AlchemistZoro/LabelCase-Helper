@@ -394,7 +394,7 @@ def valid_fn(valid_dataloader,epoch):
             logits[logits>threshold] = 1
             logits[logits<=threshold] = 0
 
-
+            wandb.log({'Batch Valid Loss:':loss.item()})
 
             logits=logits.cpu().numpy()
             # for i in range(logits.shape[0]):
@@ -429,9 +429,17 @@ def valid_fn(valid_dataloader,epoch):
             case_f1+= F1
             case_acc+= acc
         print('Valid Loss:',running_loss/len(valid_dataloader))
-            
-        print('Epoch %d Sen Valid   acc: %.4f, pre: %.4f, rec: %.4f, f1: %.4f' % (epoch+1,total_acc/valid_size,total_precision/valid_size,total_recall/valid_size,total_f1/valid_size,))
+        print('Epoch %d Sen Valid   acc: %.4f, pre: %.4f, rec: %.4f, f1: %.4f' % (epoch+1,total_acc/valid_size,total_precision/valid_size,total_recall/valid_size,total_f1/valid_size))
         print('Epoch %d Case Valid   acc: %.4f, pre: %.4f, rec: %.4f, f1: %.4f' % (epoch+1,case_acc/valid_case_size,case_precision/valid_case_size,case_recall/valid_case_size,case_f1/valid_case_size))
+        wandb.log({'Epoch Valid Loss:':running_loss/len(valid_dataloader)})
+        wandb.log({'total_acc':total_acc/valid_size,
+            'total_precision':total_precision/valid_size,
+        'total_recall':total_recall/valid_size,
+        'total_f1':total_f1/valid_size})
+        wandb.log({'case_acc':case_acc/valid_size,
+            'case_precision':case_precision/valid_size,
+        'case_recall':case_recall/valid_size,
+        'case_f1':case_f1/valid_size})
         return case_f1/valid_case_size
 
 def model_save(model,model_name):
