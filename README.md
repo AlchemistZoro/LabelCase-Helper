@@ -1,3 +1,11 @@
+# AI-LI:智能判决书分类与打标平台
+
+### 网站
+网址：http://law.seutools.com/
+使用说明：
+
+
+
 ### 项目介绍
 
 关键词：自然语言处理，分类任务，多标签，多分类，法律任务。
@@ -6,52 +14,47 @@
 
 原始比赛链接：http://cail.cipsc.org.cn/task8.html
 
-冠军方案：https://m.sohu.com/a/502009176_121123754/
-
-冠军方案核心：滑动窗多标签并集模型及负样本采样的训练策略。
-
 个人基础方案：单句预测标签最终结果求并集作为案件的标签。
+
+个人改进方案：滑动窗多标签并集模型及负样本采样的训练策略。
+
 
 ### 运行
 
-1. 进入目录:
-
+训练模型：
 ```
-cd ./bert-baseline
-```
-
-2. 创建训练数据：
-
-```
-python dataprocess.py 
+cd bert-bseline
 ```
 
-3. 训练：
+base实验运行：
+```
+python train_wandb.py --debug --debug_train_num=200 --debug_valid_num=40 --train_batch=16 --valid_batch=64 --model_path=bert-base-chinese --learning_rate=5e-5 --train_rate=0.8 --content_size=100 --epoch_number=10 --freeze --pn_rate=1 --time_limit=20
+```
 
-   运行```train_base.ipynb```。
+pn_rate 10：
+```
+python train_wandb.py --debug --debug_train_num=200 --debug_valid_num=40 --train_batch=16 --valid_batch=64 --model_path=bert-base-chinese --learning_rate=5e-5 --train_rate=0.8 --content_size=100 --epoch_number=10 --freeze --pn_rate=10 --time_limit=20
+```
 
-### 参数
+pn_rate 0.1
+```
+python train_wandb.py --debug --debug_train_num=200 --debug_valid_num=40 --train_batch=16 --valid_batch=64 --model_path=bert-base-chinese --learning_rate=5e-5 --train_rate=0.8 --content_size=100 --epoch_number=10 --freeze --pn_rate=0.1 --time_limit=20
+```
 
-1. 模型路径如果有中文预训练模型就直接使用，如果没有则从hugging face上下载。
+freeze = false
+```
+python train_wandb.py --debug --debug_train_num=200 --debug_valid_num=40 --train_batch=16 --valid_batch=64 --model_path=bert-base-chinese --learning_rate=5e-5 --train_rate=0.8 --content_size=100 --epoch_number=10 --pn_rate=1 --time_limit=20
+```
 
-   ```python
-   model_path = model_root_path + '/'+model_list[model_idx]+'/'
-   # model download from hugging-face
-   model_path = 'bert-base-chinese'
-   ```
+content_size = 500
+```
+python train_wandb.py --debug --debug_train_num=200 --debug_valid_num=40 --train_batch=16 --valid_batch=64 --model_path=bert-base-chinese --learning_rate=5e-5 --train_rate=0.8 --content_size=500 --epoch_number=10 --freeze --pn_rate=1 --time_limit=20
+```
 
-2. 负样本比例选择
+train
+```
+python train_wandb.py --train_batch=16 --valid_batch=64 --model_path=bert-base-chinese --learning_rate=5e-5 --train_rate=0.8 --content_size=100 --epoch_number=20 --freeze --pn_rate=1 --time_limit=100
+```
 
-   我不清楚具体选择多少，设置0.5感觉无法训练出来。
 
-### 问题
-
-训练loss下降指标正常，测试集的f1完全没有没有收敛。
-
-![image-20220702205824104](pic/image-20220702205824104.png)
-
-可能原因：
-
-1. 负样本采样选择比例错误
-2. 模型数据较少。
 

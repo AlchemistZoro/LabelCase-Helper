@@ -97,10 +97,10 @@ def cal_metrics(pred_choice,target):
     return acc,p,r,F1
 
 parser = argparse.ArgumentParser(description='Data process')
-parser.add_argument('--debug', default=True,type=bool)
+parser.add_argument('--debug', action="store_true")
 parser.add_argument('--debug_train_num', default=100,type=int)
 parser.add_argument('--debug_valid_num', default=20,type=int)
-parser.add_argument('--train_batch', default=16,type=int)
+parser.add_argument('--train_batch', default=8,type=int)
 parser.add_argument('--valid_batch', default=64,type=int)
 
 parser.add_argument('--model_path', default='bert-base-chinese')
@@ -110,16 +110,18 @@ parser.add_argument('--content_size', default=100,type=int)
 
 parser.add_argument('--epoch_number', default=10,type=int)
 
-parser.add_argument('--freeze', default=True,type=bool)
-parser.add_argument('--loss', default='MCE')
-parser.add_argument('--optm', default='Adam')
-parser.add_argument('--pn_rate', default=1,type=int)
+parser.add_argument('--freeze', action="store_true")
+
+parser.add_argument('--pn_rate', default=1,type=float)
 parser.add_argument('--class_num', default=234,type=int)
 
 parser.add_argument('--time_limit', default=30,type=int)
 parser.add_argument('--f1_limit', default=0.55,type=float)
 parser.add_argument('--diff_limit', default=2,type=int)
 parser.add_argument('--f1_save_limit', default=0.3,type=float)
+
+parser.add_argument('--loss', default='MCE')
+parser.add_argument('--optm', default='Adam')
 args = parser.parse_args()
 
 
@@ -436,10 +438,10 @@ def valid_fn(valid_dataloader,epoch):
             'total_precision':total_precision/valid_size,
         'total_recall':total_recall/valid_size,
         'total_f1':total_f1/valid_size})
-        wandb.log({'case_acc':case_acc/valid_size,
-            'case_precision':case_precision/valid_size,
-        'case_recall':case_recall/valid_size,
-        'case_f1':case_f1/valid_size})
+        wandb.log({'case_acc':case_acc/valid_case_size,
+            'case_precision':case_precision/valid_case_size,
+        'case_recall':case_recall/valid_case_size,
+        'case_f1':case_f1/valid_case_size})
         return case_f1/valid_case_size
 
 def model_save(model,model_name):
@@ -452,7 +454,7 @@ model_name=hashlib.md5("123456".encode("utf-8")).hexdigest()
 for epoch in range(epoch_number):
     train_fn(train_dataloader,optimizer,epoch)
     now_f1=valid_fn(valid_dataloader,epoch)
-    if now_f1>best_f1:
+    if not now_f1<best_f1:
         diff = 0
         best_f1 = now_f1
         if now_f1>f1_save_limit:
