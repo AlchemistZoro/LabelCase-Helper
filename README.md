@@ -74,7 +74,7 @@ python train_wandb.py --debug --debug_train_num=200 --debug_valid_num=40 --train
 
 train
 ```
-python train_wandb.py --train_batch=16 --valid_batch=64 --model_path=bert-base-chinese --learning_rate=5e-5 --train_rate=0.8 --content_size=100 --epoch_number=20 --freeze --pn_rate=1 --time_limit=100
+python train_wandb.py --train_batch 32 --valid_batch 64 --model_path bert-base-chinese --learning_rate 5e-5 --train_rate 0.8 --content_size 500 --epoch_number 20 --freeze --pn_rate 1 --time_limit 100
 ```
 
 

@@ -100,7 +100,7 @@ parser = argparse.ArgumentParser(description='Data process')
 parser.add_argument('--debug', action="store_true")
 parser.add_argument('--debug_train_num', default=100,type=int)
 parser.add_argument('--debug_valid_num', default=20,type=int)
-parser.add_argument('--train_batch', default=8,type=int)
+parser.add_argument('--train_batch', default=16,type=int)
 parser.add_argument('--valid_batch', default=64,type=int)
 
 parser.add_argument('--model_path', default='bert-base-chinese')
@@ -134,6 +134,8 @@ model_path = args.model_path   #'chinese-bert-wwm',
 learning_rate = args.learning_rate
 train_rate = args.train_rate
 content_size = args.content_size
+
+
 
 epoch_number = args.epoch_number
 freeze = args.freeze
@@ -210,7 +212,7 @@ data=[onehot-vec,id,content]
 label = [0,onehot-vec]
 '''
 
-process_data_path = '../processeddata/tr-0.8-100/'
+
 train_data = pd.read_csv(process_data_path+'train_data.csv')
 valid_data = pd.read_csv(process_data_path+'valid_data.csv')
 train_label = pd.read_csv(process_data_path+'train_label.csv')
@@ -448,6 +450,10 @@ def model_save(model,model_name):
     ## 保存模型
     torch.save(model, './saved/%s.pth' % (model_name)) 
     print('save')
+
+    process_data_path = './saved/'
+    if not os.path.exists(process_data_path):
+        os.mkdir(process_data_path)
 
 best_f1 = 0
 model_name=hashlib.md5("123456".encode("utf-8")).hexdigest()
