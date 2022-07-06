@@ -58,4 +58,8 @@ python train_wandb.py --train_batch=16 --valid_batch=64 --model_path=bert-base-c
 ```
 
 
+train 100with unbalance
+```
+python train_wandb.py --train_batch 16 --valid_batch 64 --model_path bert-base-chinese --learning_rate 5e-5 --train_rate 0.8 --content_size 100 --epoch_number 20 --freeze --pn_rate 1 --time_limit 100
+```
 

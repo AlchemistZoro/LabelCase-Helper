@@ -151,6 +151,8 @@ f1_save_limit = args.f1_save_limit
 
 dic = vars(args)
 
+print(dic)
+
 wandb.login()
 wandb.init(project='case-label', 
                      job_type="train",
@@ -450,7 +452,7 @@ def model_save(model,model_name):
     print('save')
 
 best_f1 = 0
-model_name=hashlib.md5("123456".encode("utf-8")).hexdigest()
+model_name=hashlib.md5(str(int(time.time())).encode("utf-8")).hexdigest()
 for epoch in range(epoch_number):
     train_fn(train_dataloader,optimizer,epoch)
     now_f1=valid_fn(valid_dataloader,epoch)
