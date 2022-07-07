@@ -9,3 +9,5 @@ EDA/output/*
 preprocessdata
 processeddata
 *.pth
+
+*/input/

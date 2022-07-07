@@ -78,4 +78,38 @@ python train_wandb.py --train_batch 32 --valid_batch 64 --model_path bert-base-c
 ```
 
 
+train 100with unbalance
+```
+python train_wandb.py --train_batch 16 --valid_batch 64 --model_path bert-base-chinese --learning_rate 5e-5 --train_rate 0.8 --content_size 100 --epoch_number 20 --freeze --pn_rate 1 --time_limit 100
+```
+
+train 100with unbalance
+```
+python train_wandb.py --train_batch 16 --valid_batch 64 --model_path hfl/chinese-bert-wwm --learning_rate 5e-5 --train_rate 0.8 --content_size 100 --epoch_number 20 --freeze --pn_rate 1 --time_limit 100
+```
+
+常见的模型：[bert-base-chinese,hfl/chinese-bert-wwm,hfl/chinese-bert-wwm-ext,hfl/chinese-roberta-wwm-ext,thunlp/Lawformer]
+
+python train_wandb.py --train_batch 16 --valid_batch 64 --model_path hfl/chinese-bert-wwm --learning_rate 5e-5 --train_rate 0.8 --content_size 100 --epoch_number 20 --freeze --pn_rate 1 --time_limit 100
+
+debug测试：
+python train_wandb.py --debug --train_batch 16 --valid_batch 64 --model_path hfl/chinese-bert-wwm-ext --learning_rate 5e-5 --train_rate 0.8 --content_size 100 --epoch_number 20 --freeze --pn_rate 1 --time_limit 100
+
+参数优化
+python train_wandb.py --train_batch 16 --valid_batch 64 --model_path hfl/chinese-roberta-wwm-ext --learning_rate 2e-5 --train_rate 0.8 --content_size 100 --epoch_number 20 --freeze --pn_rate 1 --time_limit 100
+
+全量模型：
+python train_wandb.py --train_batch 16 --valid_batch 64 --model_path hfl/chinese-roberta-wwm-ext --learning_rate 5e-5 --train_rate 0.999 --content_size 100 --epoch_number 20 --freeze --pn_rate 1 --time_limit 500
+
+可能预备模型：
+9b1519a4f2 : 0.5474
+```
+python train_wandb.py --train_batch 16 --valid_batch 64 --model_path hfl/chinese-roberta-wwm-ext --learning_rate 5e-5 --train_rate 0.8 --content_size 100 --epoch_number 20 --freeze --pn_rate 1 --time_limit 500
+```
+
+1573bde29b : 0.5483
+```
+python train_wandb.py --train_batch 16 --valid_batch 64 --model_path hfl/chinese-roberta-wwm-ext --learning_rate 2e-5 --train_rate 0.8 --content_size 200 --epoch_number 20 --freeze --pn_rate 1 --time_limit 500
+```
+
 
