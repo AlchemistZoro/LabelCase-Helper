@@ -92,9 +92,24 @@ python train_wandb.py --train_batch 16 --valid_batch 64 --model_path hfl/chinese
 
 python train_wandb.py --train_batch 16 --valid_batch 64 --model_path hfl/chinese-bert-wwm --learning_rate 5e-5 --train_rate 0.8 --content_size 100 --epoch_number 20 --freeze --pn_rate 1 --time_limit 100
 
-统一测试：
+debug测试：
 python train_wandb.py --debug --train_batch 16 --valid_batch 64 --model_path hfl/chinese-bert-wwm-ext --learning_rate 5e-5 --train_rate 0.8 --content_size 100 --epoch_number 20 --freeze --pn_rate 1 --time_limit 100
 
-python train_wandb.py --debug --train_batch 16 --valid_batch 64 --model_path hfl/chinese-roberta-wwm-ext --learning_rate 5e-5 --train_rate 0.8 --content_size 100 --epoch_number 20 --freeze --pn_rate 1 --time_limit 100
+参数优化
+python train_wandb.py --train_batch 16 --valid_batch 64 --model_path hfl/chinese-roberta-wwm-ext --learning_rate 2e-5 --train_rate 0.8 --content_size 100 --epoch_number 20 --freeze --pn_rate 1 --time_limit 100
 
-python train_wandb.py --train_batch 16 --valid_batch 64 --model_path hfl/chinese-roberta-wwm-ext--learning_rate 5e-5 --train_rate 0.8 --content_size 100 --epoch_number 20 --freeze --pn_rate 1 --time_limit 500
+全量模型：
+python train_wandb.py --train_batch 16 --valid_batch 64 --model_path hfl/chinese-roberta-wwm-ext --learning_rate 5e-5 --train_rate 0.999 --content_size 100 --epoch_number 20 --freeze --pn_rate 1 --time_limit 500
+
+可能预备模型：
+9b1519a4f2 : 0.5474
+```
+python train_wandb.py --train_batch 16 --valid_batch 64 --model_path hfl/chinese-roberta-wwm-ext --learning_rate 5e-5 --train_rate 0.8 --content_size 100 --epoch_number 20 --freeze --pn_rate 1 --time_limit 500
+```
+
+1573bde29b : 0.5483
+```
+python train_wandb.py --train_batch 16 --valid_batch 64 --model_path thunlp/Lawformer --learning_rate 5e-5 --train_rate 0.8 --content_size 100 --epoch_number 20 --freeze --pn_rate 1 --time_limit 500
+```
+
+

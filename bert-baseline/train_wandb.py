@@ -107,6 +107,7 @@ parser.add_argument('--model_path', default='bert-base-chinese')
 parser.add_argument('--learning_rate', default=0.00001,type=float)
 parser.add_argument('--train_rate', default=0.8,type=float)
 parser.add_argument('--content_size', default=100,type=int)
+parser.add_argument('--token_size', default=512,type=int)
 
 parser.add_argument('--epoch_number', default=10,type=int)
 
@@ -116,7 +117,7 @@ parser.add_argument('--pn_rate', default=1,type=float)
 parser.add_argument('--class_num', default=234,type=int)
 
 parser.add_argument('--time_limit', default=30,type=int)
-parser.add_argument('--f1_limit', default=0.55,type=float)
+parser.add_argument('--f1_limit', default=0.8,type=float)
 parser.add_argument('--diff_limit', default=2,type=int)
 parser.add_argument('--f1_save_limit', default=0.3,type=float)
 
@@ -148,6 +149,7 @@ time_limit =args.time_limit
 f1_limit = args.f1_limit
 diff_limit =args.diff_limit
 f1_save_limit = args.f1_save_limit 
+token_size = args.token_size
 
 dic = vars(args)
 model_name=hashlib.md5(str(int(time.time())).encode("utf-8")).hexdigest()[0:10]
@@ -336,7 +338,7 @@ def train_fn(train_dataloader,optimizer,epoch):
             id,fact, label= data
 
             # tokenize the data text
-            inputs = tokenizer(list(fact), max_length=512, padding=True, truncation=True, return_tensors='pt')
+            inputs = tokenizer(list(fact), max_length=token_size, padding=True, truncation=True, return_tensors='pt')
         
             # move data to device
             input_ids = inputs['input_ids'].to(device)
