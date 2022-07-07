@@ -150,13 +150,14 @@ diff_limit =args.diff_limit
 f1_save_limit = args.f1_save_limit 
 
 dic = vars(args)
-
+model_name=hashlib.md5(str(int(time.time())).encode("utf-8")).hexdigest()[0:10]
 print(dic)
 
 wandb.login()
 wandb.init(project='case-label', 
                      job_type="train",
-                     config = dic
+                     config = dic,
+                     notes=model_name
                      )
 
 process_data_path = '../processeddata/tr-%s-%s/' %(str(train_rate),str(content_size))
@@ -165,7 +166,7 @@ process_data_path = '../processeddata/tr-%s-%s/' %(str(train_rate),str(content_s
 # debug_valid_num = 20
 # train_batch = 16
 # valid_batch = 64
-# model_path = 'bert-base-chinese'   #'chinese-bert-wwm',
+# model_path = 'bert-base-chinese'   #'hfl/chinese-bert-wwm',
 # learning_rate = 5e-5
 # train_rate = 0.8
 # content_size = 100
@@ -199,10 +200,15 @@ seed_everything()
 
 start = datetime.datetime.now()  
 # model download from hugging-face
-model_path = 'bert-base-chinese'
-tokenizer = BertTokenizer.from_pretrained(model_path)
+
+
 # tokenizer = AutoTokenizer.from_pretrained("hfl/chinese-roberta-wwm-ext")
 # model_path = "thunlp/Lawformer"
+if model_path== "thunlp/Lawformer":
+    tokenizer = AutoTokenizer.from_pretrained("hfl/chinese-roberta-wwm-ext")
+else:
+    tokenizer = BertTokenizer.from_pretrained(model_path)
+
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
@@ -218,18 +224,19 @@ valid_data = pd.read_csv(process_data_path+'valid_data.csv')
 train_label = pd.read_csv(process_data_path+'train_label.csv')
 valid_label = pd.read_csv(process_data_path+'valid_label.csv')
 
-print(train_data.shape)
-print(valid_data.shape)
-print(train_label.shape)
-print(valid_label.shape)
+# print(train_data.shape)
+# print(valid_data.shape)
+# print(train_label.shape)
+# print(valid_label.shape)
+
 
 
 train_data=train_data[train_data.iloc[:,-1].notnull()]
 valid_data=valid_data[valid_data.iloc[:,-1].notnull()]
-print(train_data.shape)
-print(valid_data.shape)
-print(train_label.shape)
-print(valid_label.shape)
+# print(train_data.shape)
+# print(valid_data.shape)
+# print(train_label.shape)
+# print(valid_label.shape)
 
 if debug :
     train_label=train_label.head(debug_train_num)
@@ -237,10 +244,10 @@ if debug :
     train_data=train_data[train_data["id"].isin(train_label.iloc[:,0])]
     valid_data=valid_data[valid_data["id"].isin(valid_label.iloc[:,0])]
 
-print(train_data.shape)
-print(valid_data.shape)
-print(train_label.shape)
-print(valid_label.shape)
+# print(train_data.shape)
+# print(valid_data.shape)
+# print(train_label.shape)
+# print(valid_label.shape)
 
 num = train_data.shape[0]
 train_data_sum = []
@@ -278,7 +285,6 @@ valid_dataloader = DataLoader(valid_dataset,batch_size=valid_batch,shuffle=False
 
 
     
-
 
 
 # load the model and tokenizer
@@ -436,6 +442,7 @@ def valid_fn(valid_dataloader,epoch):
         print('Epoch %d Sen Valid   acc: %.4f, pre: %.4f, rec: %.4f, f1: %.4f' % (epoch+1,total_acc/valid_size,total_precision/valid_size,total_recall/valid_size,total_f1/valid_size))
         print('Epoch %d Case Valid   acc: %.4f, pre: %.4f, rec: %.4f, f1: %.4f' % (epoch+1,case_acc/valid_case_size,case_precision/valid_case_size,case_recall/valid_case_size,case_f1/valid_case_size))
         wandb.log({'Epoch Valid Loss:':running_loss/len(valid_dataloader)})
+
         wandb.log({'total_acc':total_acc/valid_size,
             'total_precision':total_precision/valid_size,
         'total_recall':total_recall/valid_size,
@@ -444,6 +451,7 @@ def valid_fn(valid_dataloader,epoch):
             'case_precision':case_precision/valid_case_size,
         'case_recall':case_recall/valid_case_size,
         'case_f1':case_f1/valid_case_size})
+        
         return case_f1/valid_case_size
 
 def model_save(model,model_name):
@@ -452,7 +460,7 @@ def model_save(model,model_name):
     print('save')
 
 best_f1 = 0
-model_name=hashlib.md5(str(int(time.time())).encode("utf-8")).hexdigest()
+
 for epoch in range(epoch_number):
     train_fn(train_dataloader,optimizer,epoch)
     now_f1=valid_fn(valid_dataloader,epoch)
@@ -469,3 +477,4 @@ for epoch in range(epoch_number):
             break
         if out_time_limit(start,time_limit):
             break
+    wandb.log({'best_f1':best_f1})

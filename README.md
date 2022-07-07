@@ -83,3 +83,18 @@ train 100with unbalance
 python train_wandb.py --train_batch 16 --valid_batch 64 --model_path bert-base-chinese --learning_rate 5e-5 --train_rate 0.8 --content_size 100 --epoch_number 20 --freeze --pn_rate 1 --time_limit 100
 ```
 
+train 100with unbalance
+```
+python train_wandb.py --train_batch 16 --valid_batch 64 --model_path hfl/chinese-bert-wwm --learning_rate 5e-5 --train_rate 0.8 --content_size 100 --epoch_number 20 --freeze --pn_rate 1 --time_limit 100
+```
+
+常见的模型：[bert-base-chinese,hfl/chinese-bert-wwm,hfl/chinese-bert-wwm-ext,hfl/chinese-roberta-wwm-ext,thunlp/Lawformer]
+
+python train_wandb.py --train_batch 16 --valid_batch 64 --model_path hfl/chinese-bert-wwm --learning_rate 5e-5 --train_rate 0.8 --content_size 100 --epoch_number 20 --freeze --pn_rate 1 --time_limit 100
+
+统一测试：
+python train_wandb.py --debug --train_batch 16 --valid_batch 64 --model_path hfl/chinese-bert-wwm-ext --learning_rate 5e-5 --train_rate 0.8 --content_size 100 --epoch_number 20 --freeze --pn_rate 1 --time_limit 100
+
+python train_wandb.py --debug --train_batch 16 --valid_batch 64 --model_path hfl/chinese-roberta-wwm-ext --learning_rate 5e-5 --train_rate 0.8 --content_size 100 --epoch_number 20 --freeze --pn_rate 1 --time_limit 100
+
+python train_wandb.py --train_batch 16 --valid_batch 64 --model_path hfl/chinese-roberta-wwm-ext--learning_rate 5e-5 --train_rate 0.8 --content_size 100 --epoch_number 20 --freeze --pn_rate 1 --time_limit 500
