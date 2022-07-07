@@ -109,7 +109,7 @@ python train_wandb.py --train_batch 16 --valid_batch 64 --model_path hfl/chinese
 
 1573bde29b : 0.5483
 ```
-python train_wandb.py --train_batch 16 --valid_batch 64 --model_path thunlp/Lawformer --learning_rate 5e-5 --train_rate 0.8 --content_size 100 --epoch_number 20 --freeze --pn_rate 1 --time_limit 500
+python train_wandb.py --train_batch 16 --valid_batch 64 --model_path hfl/chinese-roberta-wwm-ext --learning_rate 2e-5 --train_rate 0.8 --content_size 200 --epoch_number 20 --freeze --pn_rate 1 --time_limit 500
 ```
 
 
