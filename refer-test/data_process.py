@@ -96,8 +96,26 @@ def create_vectorlabel_dataset(data,process_data_path):
     # vec_frame.to_csv(process_data_path+'vec_frame.csv',index = False)
     return vec_frame,case_label_num,label_num
 
+# def create_vectorlabel_dataset(data,process_data_path):
+#     vectorlabel_list = []    
+#     case_label_num = []
+#     label_num=np.zeros(234,'int64')
+#     for i in data:
+#         vectorlabel = np.zeros(235,'int64')
+#         vectorlabel[0]=int(i["id"])
+#         for j in i["result"]: 
+#             idx=int(j.split('/')[-1][1:])
+#             vectorlabel[idx+1] = 1
+#             label_num[idx]+=1
+#         case_label_num.append(len(i["result"]))    
+#         vectorlabel_list.append(vectorlabel)
 
-def main(content_size):
+#     vec_frame = pd.DataFrame(np.array(vectorlabel_list))
+#     # vec_frame.to_csv(process_data_path+'vec_frame.csv',index = False)
+#     return vec_frame,case_label_num,label_num
+
+
+def get_dataset(content_size=300):
     train_rate=1
     print(train_rate,content_size)
     RANDOM_SEED = 42
@@ -203,32 +221,17 @@ def main(content_size):
     columns_dw.append('content')
     data_dw_frame=pd.DataFrame( data_windows,columns=columns_dw)
 
-
-    '''
-    r=[0.8,0.9,1]，r=1：全量训练模型 
-    '''
-
     train_data_path = process_data_path+"tr-%s-%s/"%(str(train_rate),str(content_size))
     if not os.path.exists(train_data_path):
         os.mkdir(train_data_path)
 
-    train_label=case_data.sample(frac=train_rate,replace=False) #抽取20%的数据
-    train_label.to_csv(train_data_path+'train_label.csv',index = False)
-    train_data = data_dw_frame[data_dw_frame["id"].isin(train_label[0])]
-    train_data.to_csv(train_data_path+'train_data.csv',index = False)
+    case_data.to_csv(train_data_path+'valid_label.csv',index = False)
+    data_dw_frame.to_csv(train_data_path+'valid_data.csv',index = False)
+    return case_data,data_dw_frame
 
-    print('train label shape:',train_label.shape)
-
-    if not train_rate==1:
-        valid_label=case_data[~case_data.index.isin(train_label.index)]
-        valid_label.to_csv(train_data_path+'valid_label.csv',index = False)
-        valid_data = data_dw_frame[data_dw_frame["id"].isin(valid_label[0])]
-        valid_data.to_csv(train_data_path+'valid_data.csv',index = False)
-        print('valid label shape:',valid_label.shape)
 
 
 
 
 if __name__ == "__main__":
-    main(100)
- 
+    _,_=get_dataset(300)

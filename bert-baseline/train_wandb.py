@@ -296,6 +296,9 @@ model = CaseClassification(class_num=class_num,model_path=model_path).to(device)
 # tokenizer = BertTokenizer.from_pretrained('bert-base-chinese')
 # tokenizer = BertTokenizer.from_pretrained(model_path)
 
+model_name = "9b1519a4f2"
+model_load_path = "./saved/%s.pth" % (model_name)
+model = torch.load(model_load_path).to(device)
 # prepare the optimizer and corresponding hyper-parameters
 
 no_decay = ['bias', 'LayerNorm.weight']
@@ -475,7 +478,7 @@ for epoch in range(epoch_number):
     if not now_f1<best_f1:
         diff = 0
         best_f1 = now_f1
-        if now_f1>f1_save_limit:
+        if now_f1>f1_save_limit and now_f1 == best_f1:
             model_save(model,model_name)
         if now_f1>f1_limit:          
             break

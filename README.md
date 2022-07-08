@@ -109,7 +109,10 @@ python train_wandb.py --train_batch 16 --valid_batch 64 --model_path hfl/chinese
 
 1573bde29b : 0.5483
 ```
-python train_wandb.py --train_batch 16 --valid_batch 64 --model_path hfl/chinese-roberta-wwm-ext --learning_rate 2e-5 --train_rate 0.8 --content_size 200 --epoch_number 20 --freeze --pn_rate 1 --time_limit 500
+python train_wandb.py --train_batch 64 --valid_batch 64 --model_path hfl/chinese-roberta-wwm-ext --learning_rate 2e-5 --train_rate 0.9 --content_size 300 --epoch_number 20 --freeze --pn_rate 1 --time_limit 500
 ```
 
-
+64 3090会炸掉
+```
+python refer.py --train_batch 32 --valid_batch 64 --model_path hfl/chinese-roberta-wwm-ext --learning_rate 2e-5 --train_rate 0.9 --content_size 300 --epoch_number 20 --freeze --pn_rate 0 --time_limit 500
+```

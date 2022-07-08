@@ -44,7 +44,7 @@ if __name__ == '__main__':
     model.load_state_dict(state_dict['model'])
     input_path = "./input/train.json"
     output_path = "./output/test.txt"
-    level3labels = get_level3labels(json.load(open('./input/textual_tree.json')))
+    level3labels = (json.load(open('./input/textual_tree.json')))
     
     tokenizer = BertTokenizer.from_pretrained(model_name)
     records = json.load(open(input_path, encoding='utf-8'))
